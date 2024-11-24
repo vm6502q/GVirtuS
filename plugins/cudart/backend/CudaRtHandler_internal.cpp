@@ -81,6 +81,7 @@ extern void __cudaRegisterVar(void **fatCubinHandle, char *hostVar,
 extern void __cudaRegisterSharedVar(void **fatCubinHandle, void **devicePtr,
                                     size_t size, size_t alignment, int storage);
 extern void __cudaRegisterShared(void **fatCubinHandle, void **devicePtr);
+#if CUDART_VERSION < 12000
 extern void __cudaRegisterTexture(void **fatCubinHandle,
                                   const textureReference *hostVar,
                                   void **deviceAddress, char *deviceName,
@@ -89,6 +90,7 @@ extern void __cudaRegisterSurface(void **fatCubinHandle,
                                   const surfaceReference *hostVar,
                                   void **deviceAddress, char *deviceName,
                                   int dim, int ext);
+#endif
 }
 
 static bool initialized = false;
@@ -97,8 +99,10 @@ static size_t constStrings_size = 0;
 static size_t constStrings_length = 0;
 // static void ** fatCubinHandlers[2048];
 // static void * fatCubins[2048];
-// static const textureReference * texrefHandlers[2048];
-// static const textureReference * texref[2048];
+#if CUDART_VERSION < 12000
+static const textureReference * texrefHandlers[2048];
+static const textureReference * texref[2048];
+#endif
 
 static void init() {
   //    constStrings_size = 2048;
@@ -421,6 +425,7 @@ CUDA_ROUTINE_HANDLER(RegisterShared) {
   return std::make_shared<Result>(cudaSuccess);
 }
 
+#if CUDART_VERSION < 12000
 CUDA_ROUTINE_HANDLER(RegisterTexture) {
   try {
     char *handler = input_buffer->AssignString();
@@ -445,12 +450,12 @@ CUDA_ROUTINE_HANDLER(RegisterTexture) {
       cerr << "error executing RegisterTexture: " << _cudaGetErrorEnum(error)
            << endl;
     }
-#endif
 
   } catch (string e) {
     cerr << e << endl;
     return std::make_shared<Result>(cudaErrorMemoryAllocation);
   }
+#endif
 
 #if 0
     try {
@@ -506,14 +511,13 @@ CUDA_ROUTINE_HANDLER(RegisterSurface) {
 
 #if (CUDART_VERSION >= 9020)
 
-
 #if (CUDART_VERSION >= 11000)
 #define __CUDACC__
 #define cudaPushCallConfiguration __cudaPushCallConfiguration
 #endif
 
 
-#include "crt/device_functions.h"
+// #include "crt/device_functions.h"
 #include "CudaRt_internal.h"
 
 CUDA_ROUTINE_HANDLER(PushCallConfiguration) {
@@ -572,4 +576,5 @@ CUDA_ROUTINE_HANDLER(PopCallConfiguration) {
     }
 
 }
+#endif
 #endif

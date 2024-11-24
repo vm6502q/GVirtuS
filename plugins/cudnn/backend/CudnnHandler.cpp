@@ -4027,7 +4027,75 @@ CUDNN_ROUTINE_HANDLER(DestroyRNNDescriptor){
     return std::make_shared<Result>(cs, out);
 }
 #endif
-#if CUDNN_VERSION >= 6000
+
+#if CUDNN_VERSION >= 9500
+// TODO: implement
+#elif CUDNN_VERSION >= 9000
+CUDNN_ROUTINE_HANDLER(SetRNNDescriptor){
+    Logger logger = Logger::getInstance(LOG4CPLUS_TEXT("SetRNNDescriptor"));
+
+    cudnnHandle_t handle = (cudnnHandle_t)in->Get<long long int>();
+    cudnnRNNDescriptor_t rnnDesc = (cudnnRNNDescriptor_t)in->Get<long long int>();
+    int hiddenSize = in->Get<int>();
+    int numLayers  = in->Get<int>();
+    cudnnDropoutDescriptor_t dropoutDesc = (cudnnDropoutDescriptor_t)in->Get<long long int>();
+    cudnnRNNInputMode_t inputMode = in->Get<cudnnRNNInputMode_t>();
+    cudnnDirectionMode_t direction = in->Get<cudnnDirectionMode_t>();
+    cudnnRNNMode_t mode = in->Get<cudnnRNNMode_t>();
+    cudnnRNNAlgo_t algo = in->Get<cudnnRNNAlgo_t>();
+    cudnnDataType_t mathPrec = in->Get<cudnnDataType_t>();
+
+    cudnnStatus_t cs = cudnnSetRNNDescriptor(handle, rnnDesc, hiddenSize, numLayers, dropoutDesc, inputMode, direction, mode, algo, mathPrec);
+
+    std::shared_ptr<Buffer> out = std::make_shared<Buffer>();
+      try{
+          out->Add<cudnnRNNDescriptor_t>(rnnDesc);
+    } catch(string e){
+         LOG4CPLUS_DEBUG(logger, e);
+         return std::make_shared<Result>(cs);
+    }
+    
+    LOG4CPLUS_DEBUG(logger, "cudnnSetRNNDescriptor Executed");
+    //cout << " DEBUG - cudnnSetRNNDescriptor Executed"<<endl;
+    return std::make_shared<Result>(cs, out);         
+}
+
+CUDNN_ROUTINE_HANDLER(GetRNNDescriptor){
+    Logger logger = Logger::getInstance(LOG4CPLUS_TEXT("GetRNNDescriptor"));
+
+    cudnnHandle_t handle = (cudnnHandle_t)in->Get<long long int>();
+    cudnnRNNDescriptor_t rnnDesc = (cudnnRNNDescriptor_t)in->Get<long long int>();
+    int hiddenSize;
+    int numLayers;
+    cudnnDropoutDescriptor_t dropoutDesc;
+    cudnnRNNInputMode_t inputMode;
+    cudnnDirectionMode_t direction;
+    cudnnRNNMode_t mode;
+    cudnnRNNAlgo_t algo;
+    cudnnDataType_t mathPrec;
+
+    cudnnStatus_t cs = cudnnGetRNNDescriptor(handle, rnnDesc, &hiddenSize, &numLayers, &dropoutDesc, &inputMode, &direction, &mode, &algo, &mathPrec);
+
+    std::shared_ptr<Buffer> out = std::make_shared<Buffer>();
+    try{
+        out->Add<int>(hiddenSize);
+        out->Add<int>(numLayers);
+        out->Add<cudnnDropoutDescriptor_t>(dropoutDesc);
+        out->Add<cudnnRNNInputMode_t>(inputMode);
+        out->Add<cudnnDirectionMode_t>(direction);
+        out->Add<cudnnRNNMode_t>(mode);
+        out->Add<cudnnRNNAlgo_t>(algo);
+        out->Add<cudnnDataType_t>(mathPrec);
+    } catch(string e){
+        LOG4CPLUS_DEBUG(logger, e);
+        return std::make_shared<Result>(cs);
+    }
+
+    LOG4CPLUS_DEBUG(logger, "cudnnGetRNNDescriptor Executed");
+    //cout << " DEBUG - cudnnGetRNNDescriptor Executed"<<endl;
+    return std::make_shared<Result>(cs, out);
+}
+#elif (CUDNN_VERSION >= 6000)
 CUDNN_ROUTINE_HANDLER(SetRNNDescriptor_v6){
     Logger logger = Logger::getInstance(LOG4CPLUS_TEXT("SetRNNDescriptor_v6"));
 
@@ -4198,6 +4266,7 @@ CUDNN_ROUTINE_HANDLER(GetRNNDescriptor_v8) {
 }
 #endif
 
+#if CUDNN_VERSION < 9500
 CUDNN_ROUTINE_HANDLER(SetRNNMatrixMathType){
    Logger logger = Logger::getInstance(LOG4CPLUS_TEXT("SetRNNMatrixMathType"));
    
@@ -4299,6 +4368,7 @@ CUDNN_ROUTINE_HANDLER(RNNSetClip){
     //cout << " DEBUG - cudnnRNNSetClip Executed"<<endl;
     return std::make_shared<Result>(cs, out);
 }
+
 
 CUDNN_ROUTINE_HANDLER(RNNGetClip){
      Logger logger = Logger::getInstance(LOG4CPLUS_TEXT("RNNGetClip"));
@@ -4521,27 +4591,27 @@ CUDNN_ROUTINE_HANDLER(GetRNNLinLayerMatrixParams){
 }
 
 CUDNN_ROUTINE_HANDLER(GetRNNLinLayerBiasParams){
-     Logger logger = Logger::getInstance(LOG4CPLUS_TEXT("GetRNNLinLayerBiasParams")); 
+    Logger logger = Logger::getInstance(LOG4CPLUS_TEXT("GetRNNLinLayerBiasParams")); 
      
-     cudnnHandle_t handle = (cudnnHandle_t)in->Get<long long int>();
-     cudnnRNNDescriptor_t rnnDesc = (cudnnRNNDescriptor_t)in->Get<long long int>();
-     int pseudoLayer = in->Get<int>();
-     cudnnTensorDescriptor_t xDesc = (cudnnTensorDescriptor_t)in->Get<long long int>();
-     cudnnFilterDescriptor_t wDesc = (cudnnFilterDescriptor_t)in->Get<long long int>();
-     void *w = in->Assign<void>();
-     int linLayerID = in->Get<int>();
-     cudnnFilterDescriptor_t linLayerBiasDesc;
-     void *linLayerBias;
+    cudnnHandle_t handle = (cudnnHandle_t)in->Get<long long int>();
+    cudnnRNNDescriptor_t rnnDesc = (cudnnRNNDescriptor_t)in->Get<long long int>();
+    int pseudoLayer = in->Get<int>();
+    cudnnTensorDescriptor_t xDesc = (cudnnTensorDescriptor_t)in->Get<long long int>();
+    cudnnFilterDescriptor_t wDesc = (cudnnFilterDescriptor_t)in->Get<long long int>();
+    void *w = in->Assign<void>();
+    int linLayerID = in->Get<int>();
+    cudnnFilterDescriptor_t linLayerBiasDesc;
+    void *linLayerBias;
 
-     cudnnStatus_t cs = cudnnGetRNNLinLayerBiasParams(handle, rnnDesc, pseudoLayer, xDesc, wDesc, w, linLayerID, linLayerBiasDesc, &linLayerBias);
+    cudnnStatus_t cs = cudnnGetRNNLinLayerBiasParams(handle, rnnDesc, pseudoLayer, xDesc, wDesc, w, linLayerID, linLayerBiasDesc, &linLayerBias);
 
-      std::shared_ptr<Buffer> out = std::make_shared<Buffer>();
-      try{
-          out->Add<cudnnFilterDescriptor_t>(linLayerBiasDesc);
-          out->Add<void>(linLayerBias);
-    } catch(string e){
-         LOG4CPLUS_DEBUG(logger, e);
-         return std::make_shared<Result>(cs);
+    std::shared_ptr<Buffer> out = std::make_shared<Buffer>();
+    try {
+        out->Add<cudnnFilterDescriptor_t>(linLayerBiasDesc);
+        out->Add<void>(linLayerBias);
+    } catch (string e){
+        LOG4CPLUS_DEBUG(logger, e);
+        return std::make_shared<Result>(cs);
     }
     
     LOG4CPLUS_DEBUG(logger, "cudnnGetRNNLinLayerBiasParams Executed");
@@ -4755,6 +4825,49 @@ CUDNN_ROUTINE_HANDLER(GetRNNPaddingMode){
     //cout << " DEBUG - cudnnGetRNNPaddingMode Executed"<<endl;
     return std::make_shared<Result>(cs, out);
 }
+#else
+CUDNN_ROUTINE_HANDLER(GetRNNLinLayerBiasParams){
+    Logger logger = Logger::getInstance(LOG4CPLUS_TEXT("GetRNNLinLayerBiasParams")); 
+     
+    cudnnHandle_t handle = (cudnnHandle_t)in->Get<long long int>();
+    cudnnRNNDescriptor_t rnnDesc = (cudnnRNNDescriptor_t)in->Get<long long int>();
+    int pseudoLayer = in->Get<int>();
+    size_t weightSpaceSize = (size_t)in->Get<long long int>();
+    void *weights = in->Assign<void>();
+    int linLayerID = in->Get<int>();
+    cudnnTensorDescriptor_t xDesc = (cudnnTensorDescriptor_t)in->Get<long long int>();
+    void *x;
+    cudnnTensorDescriptor_t wDesc = (cudnnTensorDescriptor_t)in->Get<long long int>();
+    void *w;
+
+    cudnnStatus_t cs = cudnnGetRNNWeightParams(handle, rnnDesc, pseudoLayer, weightSpaceSize, weights, linLayerID, xDesc, &x, wDesc, &w);
+
+    std::shared_ptr<Buffer> out = std::make_shared<Buffer>();
+    try {
+        out->Add<void>(x);
+        out->Add<void>(w);
+    } catch (string e){
+        LOG4CPLUS_DEBUG(logger, e);
+        return std::make_shared<Result>(cs);
+    }
+    
+    LOG4CPLUS_DEBUG(logger, "cudnnGetRNNLinLayerBiasParams Executed");
+    //cout << " DEBUG - cudnnGetRNNLinLayerBiasParams Executed"<<endl;
+    return std::make_shared<Result>(cs, out);  
+}
+
+CUDNN_ROUTINE_HANDLER(RNNForward){
+    Logger logger = Logger::getInstance(LOG4CPLUS_TEXT("RNNForward"));
+    LOG4CPLUS_DEBUG(logger, " cudnnRNNForward not implemented");
+    throw std::logic_error("cudnnRNNForward not implemented");   
+}
+
+CUDNN_ROUTINE_HANDLER(RNNBackward){
+    Logger logger = Logger::getInstance(LOG4CPLUS_TEXT("RNNBackward"));
+    LOG4CPLUS_DEBUG(logger, " cudnnRNNBackward not implemented");
+    throw std::logic_error("cudnnRNNBackward not implemented");  
+}
+#endif
 
 CUDNN_ROUTINE_HANDLER(CreateRNNDataDescriptor){
      Logger logger = Logger::getInstance(LOG4CPLUS_TEXT("CreateRNNDataDescriptor"));
@@ -4851,6 +4964,7 @@ CUDNN_ROUTINE_HANDLER(GetRNNDataDescriptor){
     return std::make_shared<Result>(cs, out);    
 }
 
+#if CUDNN_VERSION < 9500
 CUDNN_ROUTINE_HANDLER(RNNForwardTrainingEx){
     Logger logger = Logger::getInstance(LOG4CPLUS_TEXT("RNNForwardTrainingEx"));
 
@@ -5271,7 +5385,6 @@ CUDNN_ROUTINE_HANDLER(FindRNNBackwardDataAlgorithmEx){
     return std::make_shared<Result>(cs, out);
 }
 
-
 CUDNN_ROUTINE_HANDLER(GetRNNBackwardWeightsAlgorithmMaxCount){
    Logger logger = Logger::getInstance(LOG4CPLUS_TEXT("GetRNNBackwardWeightsAlgorithmMaxCount"));
 
@@ -5331,6 +5444,7 @@ CUDNN_ROUTINE_HANDLER(FindRNNBackwardWeightsAlgorithmEx){
     //cout << " DEBUG - cudnnFindRNNBackwardWeightsAlgorithmEx Executed"<<endl;
     return std::make_shared<Result>(cs, out);  
 }
+#endif
 
 CUDNN_ROUTINE_HANDLER(CreateSeqDataDescriptor){
     Logger logger = Logger::getInstance(LOG4CPLUS_TEXT("CreateSeqDataDescriptor"));
@@ -5923,6 +6037,7 @@ CUDNN_ROUTINE_HANDLER(GetCTCLossWorkspaceSize){
     return std::make_shared<Result>(cs, out);    
 }
 
+#if CUDNN_VERSION < 9500
 CUDNN_ROUTINE_HANDLER(CreateAlgorithmDescriptor){
     Logger logger = Logger::getInstance(LOG4CPLUS_TEXT("CreateAlgorithmDescriptor"));
 
@@ -6136,6 +6251,7 @@ CUDNN_ROUTINE_HANDLER(RestoreAlgorithm){
     //cout << " DEBUG - cudnnRestoreAlgorithm Executed"<<endl;
     return std::make_shared<Result>(cs);
 }
+#endif
 
 CUDNN_ROUTINE_HANDLER(SetCallback){
      Logger logger = Logger::getInstance(LOG4CPLUS_TEXT("SetCallback"));
