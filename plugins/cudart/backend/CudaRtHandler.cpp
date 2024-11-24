@@ -59,7 +59,7 @@ CudaRtHandler::CudaRtHandler() {
   mpFatBinary = new map<string, void **>();
   mpDeviceFunction = new map<string, string>();
   mpVar = new map<string, string>();
-#if CUDART_VERSION < 11030
+#if CUDART_VERSION < 11080
   mpTexture = new map<string, textureReference *>();
   mpSurface = new map<string, surfaceReference *>();
 #endif
@@ -210,7 +210,7 @@ const char *CudaRtHandler::GetVar(const char *handler) {
   return GetVar(tmp);
 }
 
-#if CUDART_VERSION < 11030
+#if CUDART_VERSION < 11080
 void CudaRtHandler::RegisterTexture(string &handler, textureReference *texref) {
   mpTexture->insert(make_pair(handler, texref));
   //#ifdef DEBUG
@@ -372,7 +372,7 @@ void CudaRtHandler::Initialize() {
   mspHandlers->insert(CUDA_ROUTINE_HANDLER_PAIR(RegisterVar));
   mspHandlers->insert(CUDA_ROUTINE_HANDLER_PAIR(RegisterSharedVar));
   mspHandlers->insert(CUDA_ROUTINE_HANDLER_PAIR(RegisterShared));
-#if CUDART_VERSION < 11030
+#if CUDART_VERSION < 11080
   mspHandlers->insert(CUDA_ROUTINE_HANDLER_PAIR(RegisterTexture));
   mspHandlers->insert(CUDA_ROUTINE_HANDLER_PAIR(RegisterSurface));
 #endif
@@ -424,7 +424,7 @@ void CudaRtHandler::Initialize() {
 #ifndef CUDART_VERSION
 #error CUDART_VERSION not defined
 #endif
-#if CUDART_VERSION < 11030
+#if CUDART_VERSION < 11080
   /* CudaRtHandler_surface */
   mspHandlers->insert(CUDA_ROUTINE_HANDLER_PAIR(BindSurfaceToArray));
 
