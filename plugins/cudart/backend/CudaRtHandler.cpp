@@ -434,9 +434,9 @@ void CudaRtHandler::Initialize() {
   mspHandlers->insert(CUDA_ROUTINE_HANDLER_PAIR(BindTextureToArray));
   mspHandlers->insert(CUDA_ROUTINE_HANDLER_PAIR(CreateTextureObject));
   mspHandlers->insert(CUDA_ROUTINE_HANDLER_PAIR(GetChannelDesc));
-  // mspHandlers->insert(CUDA_ROUTINE_HANDLER_PAIR(GetTextureAlignmentOffset));
-  // mspHandlers->insert(CUDA_ROUTINE_HANDLER_PAIR(GetTextureReference));
-  // mspHandlers->insert(CUDA_ROUTINE_HANDLER_PAIR(UnbindTexture));
+  mspHandlers->insert(CUDA_ROUTINE_HANDLER_PAIR(GetTextureAlignmentOffset));
+  mspHandlers->insert(CUDA_ROUTINE_HANDLER_PAIR(GetTextureReference));
+  mspHandlers->insert(CUDA_ROUTINE_HANDLER_PAIR(UnbindTexture));
 #endif
 
   /* CudaRtHandler_thread */
