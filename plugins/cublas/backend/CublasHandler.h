@@ -40,7 +40,8 @@
 #include <string>
 #include <memory>
 
-//#include <cublas.h>
+// Deprecated to include both in 2.1.15.cuBLAS: Release 12.0
+// #include <cublas.h>
 #include "cublas_v2.h"
 
 #include <gvirtus/backend/Handler.h>

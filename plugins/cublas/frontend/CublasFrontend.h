@@ -25,6 +25,7 @@
 #ifndef CUBLASFRONTEND_H
 #define	CUBLASFRONTEND_H
 
+// Deprecated to include both in 2.1.15.cuBLAS: Release 12.0
 // #include <cublas.h>
 // #include <cublas_api.h>
 #include "cublas_v2.h"
