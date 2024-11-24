@@ -4525,27 +4525,27 @@ CUDNN_ROUTINE_HANDLER(GetRNNLinLayerMatrixParams){
 }
 
 CUDNN_ROUTINE_HANDLER(GetRNNLinLayerBiasParams){
-    Logger logger = Logger::getInstance(LOG4CPLUS_TEXT("GetRNNLinLayerBiasParams")); 
+     Logger logger = Logger::getInstance(LOG4CPLUS_TEXT("GetRNNLinLayerBiasParams")); 
      
-    cudnnHandle_t handle = (cudnnHandle_t)in->Get<long long int>();
-    cudnnRNNDescriptor_t rnnDesc = (cudnnRNNDescriptor_t)in->Get<long long int>();
-    int pseudoLayer = in->Get<int>();
-    cudnnTensorDescriptor_t xDesc = (cudnnTensorDescriptor_t)in->Get<long long int>();
-    cudnnFilterDescriptor_t wDesc = (cudnnFilterDescriptor_t)in->Get<long long int>();
-    void *w = in->Assign<void>();
-    int linLayerID = in->Get<int>();
-    cudnnFilterDescriptor_t linLayerBiasDesc;
-    void *linLayerBias;
+     cudnnHandle_t handle = (cudnnHandle_t)in->Get<long long int>();
+     cudnnRNNDescriptor_t rnnDesc = (cudnnRNNDescriptor_t)in->Get<long long int>();
+     int pseudoLayer = in->Get<int>();
+     cudnnTensorDescriptor_t xDesc = (cudnnTensorDescriptor_t)in->Get<long long int>();
+     cudnnFilterDescriptor_t wDesc = (cudnnFilterDescriptor_t)in->Get<long long int>();
+     void *w = in->Assign<void>();
+     int linLayerID = in->Get<int>();
+     cudnnFilterDescriptor_t linLayerBiasDesc;
+     void *linLayerBias;
 
-    cudnnStatus_t cs = cudnnGetRNNLinLayerBiasParams(handle, rnnDesc, pseudoLayer, xDesc, wDesc, w, linLayerID, linLayerBiasDesc, &linLayerBias);
+     cudnnStatus_t cs = cudnnGetRNNLinLayerBiasParams(handle, rnnDesc, pseudoLayer, xDesc, wDesc, w, linLayerID, linLayerBiasDesc, &linLayerBias);
 
-    std::shared_ptr<Buffer> out = std::make_shared<Buffer>();
-    try {
-        out->Add<cudnnFilterDescriptor_t>(linLayerBiasDesc);
-        out->Add<void>(linLayerBias);
-    } catch (string e){
-        LOG4CPLUS_DEBUG(logger, e);
-        return std::make_shared<Result>(cs);
+      std::shared_ptr<Buffer> out = std::make_shared<Buffer>();
+      try{
+          out->Add<cudnnFilterDescriptor_t>(linLayerBiasDesc);
+          out->Add<void>(linLayerBias);
+    } catch(string e){
+         LOG4CPLUS_DEBUG(logger, e);
+         return std::make_shared<Result>(cs);
     }
     
     LOG4CPLUS_DEBUG(logger, "cudnnGetRNNLinLayerBiasParams Executed");
