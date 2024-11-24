@@ -59,7 +59,7 @@
 
 #include "../3rdparty/include/CudaRt_internal.h"
 
-#if (CUDART_VERSION < 12000)
+#if (CUDART_VERSION < 11080)
 #if (CUDART_VERSION >= 9020)
 #if (CUDART_VERSION >= 11000)
 #define __CUDACC__
