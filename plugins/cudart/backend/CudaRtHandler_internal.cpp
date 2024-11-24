@@ -509,6 +509,7 @@ CUDA_ROUTINE_HANDLER(RegisterSurface) {
 
 #if (CUDART_VERSION >= 9020)
 
+
 #if (CUDART_VERSION >= 11000)
 #define __CUDACC__
 #define cudaPushCallConfiguration __cudaPushCallConfiguration
