@@ -448,12 +448,12 @@ CUDA_ROUTINE_HANDLER(RegisterTexture) {
       cerr << "error executing RegisterTexture: " << _cudaGetErrorEnum(error)
            << endl;
     }
+#endif
 
   } catch (string e) {
     cerr << e << endl;
     return std::make_shared<Result>(cudaErrorMemoryAllocation);
   }
-#endif
 
 #if 0
     try {
