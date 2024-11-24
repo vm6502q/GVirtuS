@@ -81,7 +81,7 @@ extern void __cudaRegisterVar(void **fatCubinHandle, char *hostVar,
 extern void __cudaRegisterSharedVar(void **fatCubinHandle, void **devicePtr,
                                     size_t size, size_t alignment, int storage);
 extern void __cudaRegisterShared(void **fatCubinHandle, void **devicePtr);
-#if CUDART_VERSION < 12000
+#if CUDART_VERSION < 11080
 extern void __cudaRegisterTexture(void **fatCubinHandle,
                                   const textureReference *hostVar,
                                   void **deviceAddress, char *deviceName,
@@ -99,7 +99,7 @@ static size_t constStrings_size = 0;
 static size_t constStrings_length = 0;
 // static void ** fatCubinHandlers[2048];
 // static void * fatCubins[2048];
-#if CUDART_VERSION < 12000
+#if CUDART_VERSION < 11080
 static const textureReference * texrefHandlers[2048];
 static const textureReference * texref[2048];
 #endif
@@ -425,7 +425,7 @@ CUDA_ROUTINE_HANDLER(RegisterShared) {
   return std::make_shared<Result>(cudaSuccess);
 }
 
-#if CUDART_VERSION < 12000
+#if CUDART_VERSION < 11080
 CUDA_ROUTINE_HANDLER(RegisterTexture) {
   try {
     char *handler = input_buffer->AssignString();
