@@ -516,7 +516,9 @@ CUDA_ROUTINE_HANDLER(RegisterSurface) {
 #endif
 
 
-// #include "crt/device_functions.h"
+#if CUDART_VERSION < 11080
+#include "crt/device_functions.h"
+#endif
 #include "CudaRt_internal.h"
 
 CUDA_ROUTINE_HANDLER(PushCallConfiguration) {
