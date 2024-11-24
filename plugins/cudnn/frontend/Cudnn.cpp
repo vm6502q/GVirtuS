@@ -3616,7 +3616,7 @@ extern "C" cudnnStatus_t CUDNNWINAPI cudnnGetRNNProjectionLayers(cudnnHandle_t h
      return CudnnFrontend::GetExitCode();
 }
 
-#if CUDNN_VERSION < 9500
+#if CUDNN_VERSION < 9000
 extern "C" cudnnStatus_t CUDNNWINAPI cudnnCreatePersistentRNNPlan(cudnnRNNDescriptor_t rnnDesc,
                              					  const int minibatch,
                              					  const cudnnDataType_t dataType,
@@ -3982,7 +3982,7 @@ extern "C" cudnnStatus_t CUDNNWINAPI cudnnRNNBackwardWeights(cudnnHandle_t handl
       return CudnnFrontend::GetExitCode();
 }
 
-#if CUDNN_VERSION < 9500
+#if CUDNN_VERSION < 9000
 extern "C" cudnnStatus_t CUDNNWINAPI cudnnSetRNNPaddingMode(cudnnRNNDescriptor_t rnnDesc, cudnnRNNPaddingMode_t paddingMode){
 
       CudnnFrontend::Prepare();
@@ -4337,7 +4337,7 @@ extern "C" cudnnStatus_t CUDNNWINAPI cudnnRNNBackwardWeightsEx(cudnnHandle_t han
       return CudnnFrontend::GetExitCode();
 }
 
-#if CUDNN_VERSION < 9500
+#if CUDNN_VERSION < 9000
 extern "C" cudnnStatus_t CUDNNWINAPI cudnnSetRNNAlgorithmDescriptor(cudnnHandle_t handle, cudnnRNNDescriptor_t rnnDesc, cudnnAlgorithmDescriptor_t algoDesc){
 
      CudnnFrontend::Prepare();
@@ -4367,7 +4367,7 @@ extern "C" cudnnStatus_t CUDNNWINAPI cudnnGetRNNForwardInferenceAlgorithmMaxCoun
       return CudnnFrontend::GetExitCode();
 }
 
-#if CUDNN_VERSION < 9500
+#if CUDNN_VERSION < 9000
 extern "C" cudnnStatus_t CUDNNWINAPI cudnnFindRNNForwardInferenceAlgorithmEx(cudnnHandle_t handle,
                                         				     const cudnnRNNDescriptor_t rnnDesc,
                                         				     const int seqLength,
@@ -4441,7 +4441,7 @@ extern "C" cudnnStatus_t CUDNNWINAPI cudnnGetRNNForwardTrainingAlgorithmMaxCount
       return CudnnFrontend::GetExitCode();
 }
 
-#if CUDNN_VERSION < 9500
+#if CUDNN_VERSION < 9000
 extern "C" cudnnStatus_t CUDNNWINAPI cudnnFindRNNForwardTrainingAlgorithmEx(cudnnHandle_t handle,
                                        				           const cudnnRNNDescriptor_t rnnDesc,
                                        				           const int seqLength,
@@ -4520,7 +4520,7 @@ extern "C" cudnnStatus_t CUDNNWINAPI cudnnGetRNNBackwardDataAlgorithmMaxCount(cu
       return CudnnFrontend::GetExitCode();
 }
 
-#if CUDNN_VERSION < 9500    
+#if CUDNN_VERSION < 9000
 extern "C" cudnnStatus_t CUDNNWINAPI cudnnFindRNNBackwardDataAlgorithmEx(cudnnHandle_t handle,
                                     				        const cudnnRNNDescriptor_t rnnDesc,
                                     					const int seqLength,
@@ -4608,7 +4608,7 @@ extern "C" cudnnStatus_t CUDNNWINAPI cudnnGetRNNBackwardWeightsAlgorithmMaxCount
       return CudnnFrontend::GetExitCode();
 }
 
-#if CUDNN_VERSION < 9500
+#if CUDNN_VERSION < 9000
 extern "C" cudnnStatus_t CUDNNWINAPI cudnnFindRNNBackwardWeightsAlgorithmEx(cudnnHandle_t handle,
                                        					    const cudnnRNNDescriptor_t rnnDesc,
                                        					    const int seqLength,
@@ -5247,7 +5247,7 @@ extern "C" cudnnStatus_t CUDNNWINAPI cudnnGetCTCLossWorkspaceSize(cudnnHandle_t 
      return CudnnFrontend::GetExitCode();
 }
 
-#if CUDNN_VERSION < 9500
+#if CUDNN_VERSION < 9000
 extern "C" cudnnStatus_t CUDNNWINAPI cudnnCreateAlgorithmDescriptor(cudnnAlgorithmDescriptor_t *algoDesc){
 
     CudnnFrontend::Prepare();

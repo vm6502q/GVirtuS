@@ -4201,7 +4201,7 @@ CUDNN_ROUTINE_HANDLER(GetRNNDescriptor_v8) {
 }
 #endif
 
-#if CUDNN_VERSION < 9500
+#if CUDNN_VERSION < 9000
 CUDNN_ROUTINE_HANDLER(SetRNNMatrixMathType){
    Logger logger = Logger::getInstance(LOG4CPLUS_TEXT("SetRNNMatrixMathType"));
    
@@ -4303,7 +4303,6 @@ CUDNN_ROUTINE_HANDLER(RNNSetClip){
     //cout << " DEBUG - cudnnRNNSetClip Executed"<<endl;
     return std::make_shared<Result>(cs, out);
 }
-
 
 CUDNN_ROUTINE_HANDLER(RNNGetClip){
      Logger logger = Logger::getInstance(LOG4CPLUS_TEXT("RNNGetClip"));
@@ -4760,48 +4759,6 @@ CUDNN_ROUTINE_HANDLER(GetRNNPaddingMode){
     //cout << " DEBUG - cudnnGetRNNPaddingMode Executed"<<endl;
     return std::make_shared<Result>(cs, out);
 }
-#else
-CUDNN_ROUTINE_HANDLER(GetRNNLinLayerBiasParams){
-    Logger logger = Logger::getInstance(LOG4CPLUS_TEXT("GetRNNLinLayerBiasParams")); 
-     
-    cudnnHandle_t handle = (cudnnHandle_t)in->Get<long long int>();
-    cudnnRNNDescriptor_t rnnDesc = (cudnnRNNDescriptor_t)in->Get<long long int>();
-    int pseudoLayer = in->Get<int>();
-    size_t weightSpaceSize = (size_t)in->Get<long long int>();
-    void *weights = in->Assign<void>();
-    int linLayerID = in->Get<int>();
-    cudnnTensorDescriptor_t xDesc = (cudnnTensorDescriptor_t)in->Get<long long int>();
-    void *x;
-    cudnnTensorDescriptor_t wDesc = (cudnnTensorDescriptor_t)in->Get<long long int>();
-    void *w;
-
-    cudnnStatus_t cs = cudnnGetRNNWeightParams(handle, rnnDesc, pseudoLayer, weightSpaceSize, weights, linLayerID, xDesc, &x, wDesc, &w);
-
-    std::shared_ptr<Buffer> out = std::make_shared<Buffer>();
-    try {
-        out->Add<void>(x);
-        out->Add<void>(w);
-    } catch (string e){
-        LOG4CPLUS_DEBUG(logger, e);
-        return std::make_shared<Result>(cs);
-    }
-    
-    LOG4CPLUS_DEBUG(logger, "cudnnGetRNNLinLayerBiasParams Executed");
-    //cout << " DEBUG - cudnnGetRNNLinLayerBiasParams Executed"<<endl;
-    return std::make_shared<Result>(cs, out);  
-}
-
-CUDNN_ROUTINE_HANDLER(RNNForward){
-    Logger logger = Logger::getInstance(LOG4CPLUS_TEXT("RNNForward"));
-    LOG4CPLUS_DEBUG(logger, " cudnnRNNForward not implemented");
-    throw std::logic_error("cudnnRNNForward not implemented");   
-}
-
-CUDNN_ROUTINE_HANDLER(RNNBackward){
-    Logger logger = Logger::getInstance(LOG4CPLUS_TEXT("RNNBackward"));
-    LOG4CPLUS_DEBUG(logger, " cudnnRNNBackward not implemented");
-    throw std::logic_error("cudnnRNNBackward not implemented");  
-}
 #endif
 
 CUDNN_ROUTINE_HANDLER(CreateRNNDataDescriptor){
@@ -4899,7 +4856,7 @@ CUDNN_ROUTINE_HANDLER(GetRNNDataDescriptor){
     return std::make_shared<Result>(cs, out);    
 }
 
-#if CUDNN_VERSION < 9500
+#if CUDNN_VERSION < 9000
 CUDNN_ROUTINE_HANDLER(RNNForwardTrainingEx){
     Logger logger = Logger::getInstance(LOG4CPLUS_TEXT("RNNForwardTrainingEx"));
 
@@ -5972,7 +5929,7 @@ CUDNN_ROUTINE_HANDLER(GetCTCLossWorkspaceSize){
     return std::make_shared<Result>(cs, out);    
 }
 
-#if CUDNN_VERSION < 9500
+#if CUDNN_VERSION < 9000
 CUDNN_ROUTINE_HANDLER(CreateAlgorithmDescriptor){
     Logger logger = Logger::getInstance(LOG4CPLUS_TEXT("CreateAlgorithmDescriptor"));
 
