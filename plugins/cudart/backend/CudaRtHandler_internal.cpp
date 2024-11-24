@@ -99,10 +99,8 @@ static size_t constStrings_size = 0;
 static size_t constStrings_length = 0;
 // static void ** fatCubinHandlers[2048];
 // static void * fatCubins[2048];
-#if CUDART_VERSION < 11080
-static const textureReference * texrefHandlers[2048];
-static const textureReference * texref[2048];
-#endif
+// static const textureReference * texrefHandlers[2048];
+// static const textureReference * texref[2048];
 
 static void init() {
   //    constStrings_size = 2048;
