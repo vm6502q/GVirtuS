@@ -111,7 +111,7 @@ class CudaRtHandler : public gvirtus::backend::Handler {
   const char *GetVar(std::string &handler);
   const char *GetVar(const char *handler);
 
-#if (CUDART_VERSION < 12000)
+#if CUDART_VERSION < 11030
   void RegisterTexture(std::string &handler, textureReference *texref);
   void RegisterTexture(const char *handler, textureReference *texref);
   void RegisterSurface(std::string &handler, surfaceReference *surref);
@@ -172,7 +172,7 @@ class CudaRtHandler : public gvirtus::backend::Handler {
   std::map<std::string, void **> *mpFatBinary;
   std::map<std::string, std::string> *mpDeviceFunction;
   std::map<std::string, std::string> *mpVar;
-#if (CUDART_VERSION < 12000)
+#if CUDART_VERSION < 11030
   std::map<std::string, textureReference *> *mpTexture;
   std::map<std::string, surfaceReference *> *mpSurface;
 #endif
@@ -248,7 +248,7 @@ CUDA_ROUTINE_HANDLER(RegisterFunction);
 CUDA_ROUTINE_HANDLER(RegisterVar);
 CUDA_ROUTINE_HANDLER(RegisterSharedVar);
 CUDA_ROUTINE_HANDLER(RegisterShared);
-#if (CUDART_VERSION < 12000)
+#if CUDART_VERSION < 11030
 CUDA_ROUTINE_HANDLER(RegisterTexture);
 CUDA_ROUTINE_HANDLER(RegisterSurface);
 #endif
@@ -298,7 +298,7 @@ CUDA_ROUTINE_HANDLER(StreamCreateWithFlags);
 CUDA_ROUTINE_HANDLER(StreamWaitEvent);
 CUDA_ROUTINE_HANDLER(StreamCreateWithPriority);
 
-#if (CUDART_VERSION < 12000)
+#if CUDART_VERSION < 11030
 /* CudaRtHandler_texture */
 CUDA_ROUTINE_HANDLER(BindTexture);
 CUDA_ROUTINE_HANDLER(BindTexture2D);

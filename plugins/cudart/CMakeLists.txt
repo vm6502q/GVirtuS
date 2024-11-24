@@ -30,7 +30,7 @@ string(REGEX REPLACE ".*\\.so\\.([0-9]+\\.[0-9]+\\.[0-9]+)" "\\1" CUDART_VERSION
 
 message(STATUS "Found cudaRt: ${CUDART_VERSION} (${CUDART_INCLUDE_DIRECTORY}/cuda_runtime_api.h, ${CUDART_LIBRARY})")
 
-if (CUDART_VERSION LESS 12000)
+if (CUDART_VERSION LESS 11030)
 
 gvirtus_add_backend(cudart ${CUDA_VERSION}
         backend/CudaRtHandler_texture.cpp
@@ -68,7 +68,7 @@ gvirtus_add_frontend(cudart ${CUDA_VERSION}
         frontend/CudaRt_version.cpp
         util/CudaUtil.cpp)
 
-else (CUDART_VERSION LESS 12000)
+else (CUDART_VERSION LESS 11030)
 
 gvirtus_add_backend(cudart ${CUDA_VERSION}
         # backend/CudaRtHandler_texture.cpp
@@ -106,6 +106,6 @@ gvirtus_add_frontend(cudart ${CUDA_VERSION}
         frontend/CudaRt_version.cpp
         util/CudaUtil.cpp)
 
-endif (CUDART_VERSION LESS 12000)
+endif (CUDART_VERSION LESS 11030)
 
 add_subdirectory(demo)

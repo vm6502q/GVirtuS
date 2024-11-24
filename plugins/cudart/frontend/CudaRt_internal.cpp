@@ -219,7 +219,7 @@ extern "C" __host__ void __cudaRegisterSharedVar(void **fatCubinHandle,
   CudaRtFrontend::Execute("cudaRegisterSharedVar");
 }
 
-#if 0
+#if CUDART_VERSION < 11030
 extern "C" __host__ void __cudaRegisterTexture(void **fatCubinHandle,
                                                const textureReference *hostVar,
                                                void **deviceAddress,
@@ -238,9 +238,7 @@ extern "C" __host__ void __cudaRegisterTexture(void **fatCubinHandle,
   CudaRtFrontend::AddVariableForArguments(ext);
   CudaRtFrontend::Execute("cudaRegisterTexture");
 }
-#endif
 
-#if 0
 extern "C" __host__ void __cudaRegisterSurface(void **fatCubinHandle,
                                                const surfaceReference *hostVar,
                                                void **deviceAddress,
@@ -269,7 +267,7 @@ extern "C" __host__ int __cudaSynchronizeThreads(void **x, void *y) {
   return 0;
 }
 
-#if 0
+#if CUDART_VERSION < 11030
 extern "C" __host__ void __cudaTextureFetch(const void *tex, void *index,
                                             int integer, void *val) {
   // FIXME: implement
