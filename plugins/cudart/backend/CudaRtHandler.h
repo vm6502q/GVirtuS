@@ -60,11 +60,16 @@
 #include "../3rdparty/include/CudaRt_internal.h"
 
 #if (CUDART_VERSION >= 9020)
+
 #if (CUDART_VERSION >= 11000)
 #define __CUDACC__
 #define cudaPushCallConfiguration __cudaPushCallConfiguration
 #endif
+
+#if (CUDART_VERSION < 12000)
 #include "crt/device_functions.h"
+#endif
+
 #endif
 
 //#define DEBUG
@@ -109,6 +114,7 @@ class CudaRtHandler : public gvirtus::backend::Handler {
   const char *GetVar(std::string &handler);
   const char *GetVar(const char *handler);
 
+#if CUDART_VERSION < 12000
   void RegisterTexture(std::string &handler, textureReference *texref);
   void RegisterTexture(const char *handler, textureReference *texref);
   void RegisterSurface(std::string &handler, surfaceReference *surref);
@@ -121,6 +127,7 @@ class CudaRtHandler : public gvirtus::backend::Handler {
   surfaceReference *GetSurface(pointer_t handler);
   surfaceReference *GetSurface(const char *handler);
   const char *GetSurfaceHandler(surfaceReference *texref);
+#endif
 
   const char *GetSymbol(std::shared_ptr<Buffer> in);
 
@@ -168,8 +175,10 @@ class CudaRtHandler : public gvirtus::backend::Handler {
   std::map<std::string, void **> *mpFatBinary;
   std::map<std::string, std::string> *mpDeviceFunction;
   std::map<std::string, std::string> *mpVar;
+#if CUDART_VERSION < 12000
   std::map<std::string, textureReference *> *mpTexture;
   std::map<std::string, surfaceReference *> *mpSurface;
+#endif
   map<std::string, NvInfoFunction>* mapDeviceFunc2InfoFunc;
   map<const void *,std::string>* mapHost2DeviceFunc;
   void *mpShm;
@@ -229,7 +238,7 @@ CUDA_ROUTINE_HANDLER(SetDoubleForDevice);
 CUDA_ROUTINE_HANDLER(SetDoubleForHost);
 CUDA_ROUTINE_HANDLER(SetupArgument);
 
-#if CUDART_VERSION >= 9020
+#if (CUDART_VERSION >= 9020) && (CUDART_VERSION < 12000)
 CUDA_ROUTINE_HANDLER(PushCallConfiguration);
 CUDA_ROUTINE_HANDLER(PopCallConfiguration);
 #endif
@@ -242,8 +251,10 @@ CUDA_ROUTINE_HANDLER(RegisterFunction);
 CUDA_ROUTINE_HANDLER(RegisterVar);
 CUDA_ROUTINE_HANDLER(RegisterSharedVar);
 CUDA_ROUTINE_HANDLER(RegisterShared);
+#if CUDART_VERSION < 12000
 CUDA_ROUTINE_HANDLER(RegisterTexture);
 CUDA_ROUTINE_HANDLER(RegisterSurface);
+#endif
 CUDA_ROUTINE_HANDLER(RegisterSharedMemory);
 CUDA_ROUTINE_HANDLER(RequestSharedMemory);
 
@@ -290,6 +301,7 @@ CUDA_ROUTINE_HANDLER(StreamCreateWithFlags);
 CUDA_ROUTINE_HANDLER(StreamWaitEvent);
 CUDA_ROUTINE_HANDLER(StreamCreateWithPriority);
 
+#if CUDART_VERSION < 12000
 /* CudaRtHandler_texture */
 CUDA_ROUTINE_HANDLER(BindTexture);
 CUDA_ROUTINE_HANDLER(BindTexture2D);
@@ -302,7 +314,7 @@ CUDA_ROUTINE_HANDLER(UnbindTexture);
 
 /* CudaRtHandler_surface */
 CUDA_ROUTINE_HANDLER(BindSurfaceToArray);
-// CUDA_ROUTINE_HANDLER(GetTextureReference);
+#endif
 
 /* CudaRtHandler_thread */
 CUDA_ROUTINE_HANDLER(ThreadExit);

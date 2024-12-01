@@ -4027,7 +4027,10 @@ CUDNN_ROUTINE_HANDLER(DestroyRNNDescriptor){
     return std::make_shared<Result>(cs, out);
 }
 #endif
-#if CUDNN_VERSION >= 6000
+
+#if CUDNN_VERSION >= 9000
+// TODO: implement
+#elif (CUDNN_VERSION >= 6000)
 CUDNN_ROUTINE_HANDLER(SetRNNDescriptor_v6){
     Logger logger = Logger::getInstance(LOG4CPLUS_TEXT("SetRNNDescriptor_v6"));
 
@@ -4198,6 +4201,7 @@ CUDNN_ROUTINE_HANDLER(GetRNNDescriptor_v8) {
 }
 #endif
 
+#if CUDNN_VERSION < 9000
 CUDNN_ROUTINE_HANDLER(SetRNNMatrixMathType){
    Logger logger = Logger::getInstance(LOG4CPLUS_TEXT("SetRNNMatrixMathType"));
    
@@ -4755,6 +4759,7 @@ CUDNN_ROUTINE_HANDLER(GetRNNPaddingMode){
     //cout << " DEBUG - cudnnGetRNNPaddingMode Executed"<<endl;
     return std::make_shared<Result>(cs, out);
 }
+#endif
 
 CUDNN_ROUTINE_HANDLER(CreateRNNDataDescriptor){
      Logger logger = Logger::getInstance(LOG4CPLUS_TEXT("CreateRNNDataDescriptor"));
@@ -4851,6 +4856,7 @@ CUDNN_ROUTINE_HANDLER(GetRNNDataDescriptor){
     return std::make_shared<Result>(cs, out);    
 }
 
+#if CUDNN_VERSION < 9000
 CUDNN_ROUTINE_HANDLER(RNNForwardTrainingEx){
     Logger logger = Logger::getInstance(LOG4CPLUS_TEXT("RNNForwardTrainingEx"));
 
@@ -5271,7 +5277,6 @@ CUDNN_ROUTINE_HANDLER(FindRNNBackwardDataAlgorithmEx){
     return std::make_shared<Result>(cs, out);
 }
 
-
 CUDNN_ROUTINE_HANDLER(GetRNNBackwardWeightsAlgorithmMaxCount){
    Logger logger = Logger::getInstance(LOG4CPLUS_TEXT("GetRNNBackwardWeightsAlgorithmMaxCount"));
 
@@ -5331,6 +5336,7 @@ CUDNN_ROUTINE_HANDLER(FindRNNBackwardWeightsAlgorithmEx){
     //cout << " DEBUG - cudnnFindRNNBackwardWeightsAlgorithmEx Executed"<<endl;
     return std::make_shared<Result>(cs, out);  
 }
+#endif
 
 CUDNN_ROUTINE_HANDLER(CreateSeqDataDescriptor){
     Logger logger = Logger::getInstance(LOG4CPLUS_TEXT("CreateSeqDataDescriptor"));
@@ -5923,6 +5929,7 @@ CUDNN_ROUTINE_HANDLER(GetCTCLossWorkspaceSize){
     return std::make_shared<Result>(cs, out);    
 }
 
+#if CUDNN_VERSION < 9000
 CUDNN_ROUTINE_HANDLER(CreateAlgorithmDescriptor){
     Logger logger = Logger::getInstance(LOG4CPLUS_TEXT("CreateAlgorithmDescriptor"));
 
@@ -6136,6 +6143,7 @@ CUDNN_ROUTINE_HANDLER(RestoreAlgorithm){
     //cout << " DEBUG - cudnnRestoreAlgorithm Executed"<<endl;
     return std::make_shared<Result>(cs);
 }
+#endif
 
 CUDNN_ROUTINE_HANDLER(SetCallback){
      Logger logger = Logger::getInstance(LOG4CPLUS_TEXT("SetCallback"));

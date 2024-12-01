@@ -358,13 +358,15 @@ CUDA_ROUTINE_HANDLER(IpcOpenEventHandle) {
   Logger logger = Logger::getInstance(LOG4CPLUS_TEXT("IpcOpenEventHandler"));
   CudaRtHandler::setLogLevel(&logger);
 
-  std::shared_ptr<Buffer> out = std::make_shared<Buffer>();
-
   try {
     cudaEvent_t *event = input_buffer->Assign<cudaEvent_t>();
     cudaIpcEventHandle_t handle = input_buffer->Get<cudaIpcEventHandle_t>();
     cudaError_t exit_code = cudaIpcOpenEventHandle(event, handle);
+    std::shared_ptr<Buffer> out = std::make_shared<Buffer>();
+
     out->Add(event);
+    return std::make_shared<Result>(exit_code, out);
+
   } catch (string e) {
     // cerr << e << endl;
     LOG4CPLUS_DEBUG(logger, e);
