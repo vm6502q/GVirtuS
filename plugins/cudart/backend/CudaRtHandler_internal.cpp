@@ -507,18 +507,14 @@ CUDA_ROUTINE_HANDLER(RegisterSurface) {
   return std::make_shared<Result>(cudaSuccess);
 }
 
-#if (CUDART_VERSION >= 9020)
-
+#if (CUDART_VERSION >= 9020) && (CUDART_VERSION < 12000)
 
 #if (CUDART_VERSION >= 11000)
 #define __CUDACC__
 #define cudaPushCallConfiguration __cudaPushCallConfiguration
 #endif
 
-
-#if CUDART_VERSION < 12000
 #include "crt/device_functions.h"
-#endif
 #include "CudaRt_internal.h"
 
 CUDA_ROUTINE_HANDLER(PushCallConfiguration) {
