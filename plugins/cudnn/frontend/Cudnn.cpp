@@ -3301,6 +3301,8 @@ extern "C" cudnnStatus_t CUDNNWINAPI cudnnDestroyRNNDescriptor(cudnnRNNDescripto
    return CudnnFrontend::GetExitCode();
 }
 
+#if CUDNN_VERSION < 9000
+
 #if CUDNN_VERSION < 8000
 extern "C" cudnnStatus_t CUDNNWINAPI cudnnSetRNNDescriptor_v5(cudnnRNNDescriptor_t rnnDesc,
                                                               int hiddenSize,
@@ -4010,6 +4012,8 @@ extern "C" cudnnStatus_t CUDNNWINAPI cudnnGetRNNPaddingMode(cudnnRNNDescriptor_t
       }
       return CudnnFrontend::GetExitCode();
 }
+#endif
+
 #endif
 
 extern "C" cudnnStatus_t CUDNNWINAPI cudnnCreateRNNDataDescriptor(cudnnRNNDataDescriptor_t *rnnDataDesc){

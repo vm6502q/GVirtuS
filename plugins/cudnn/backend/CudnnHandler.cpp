@@ -250,6 +250,7 @@ void CudnnHandler::Initialize(){
     mspHandlers->insert(CUDNN_ROUTINE_HANDLER_PAIR(DropoutBackward));
     mspHandlers->insert(CUDNN_ROUTINE_HANDLER_PAIR(CreateRNNDescriptor));
     mspHandlers->insert(CUDNN_ROUTINE_HANDLER_PAIR(DestroyRNNDescriptor));
+#if CUDNN_VERSION < 9000
 #if CUDNN_VERSION < 8000
     mspHandlers->insert(CUDNN_ROUTINE_HANDLER_PAIR(SetRNNDescriptor_v5));
     //mspHandlers->insert(CUDNN_ROUTINE_HANDLER_PAIR(GetRNNDescriptor_v5));
@@ -285,6 +286,7 @@ void CudnnHandler::Initialize(){
     mspHandlers->insert(CUDNN_ROUTINE_HANDLER_PAIR(RNNBackwardWeights));
     mspHandlers->insert(CUDNN_ROUTINE_HANDLER_PAIR(SetRNNPaddingMode));
     mspHandlers->insert(CUDNN_ROUTINE_HANDLER_PAIR(GetRNNPaddingMode));
+#endif
     mspHandlers->insert(CUDNN_ROUTINE_HANDLER_PAIR(CreateRNNDataDescriptor));
     mspHandlers->insert(CUDNN_ROUTINE_HANDLER_PAIR(DestroyRNNDataDescriptor));
     mspHandlers->insert(CUDNN_ROUTINE_HANDLER_PAIR(SetRNNDataDescriptor));

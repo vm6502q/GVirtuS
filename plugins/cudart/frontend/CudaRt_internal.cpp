@@ -274,7 +274,6 @@ extern "C" __host__ void __cudaTextureFetch(const void *tex, void *index,
   std::cerr << "*** Error: __cudaTextureFetch() not yet implemented!"
             << std::endl;
 }
-#endif
 
 #if CUDA_VERSION >= 9000
 extern "C" __host__ __device__  unsigned CUDARTAPI __cudaPushCallConfiguration(dim3 gridDim, dim3 blockDim, size_t sharedMem = 0, void *stream = 0) {
@@ -333,4 +332,5 @@ extern "C" cudaError_t CUDARTAPI __cudaPopCallConfiguration( dim3 *gridDim,
     */
     return cudaError;
 }
+#endif
 #endif
